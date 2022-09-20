@@ -21,7 +21,7 @@
 #include <glm/gtx/string_cast.hpp>
 
 
-using namespace molumes;
+using namespace honeycomb;
 using namespace glm;
 
 #ifdef HAVE_MATLAB
@@ -34,7 +34,7 @@ Table::Table()
 
 }
 
-const std::string & molumes::Table::filename() const
+const std::string & honeycomb::Table::filename() const
 {
 	return m_filename;
 }

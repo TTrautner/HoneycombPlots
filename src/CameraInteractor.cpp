@@ -19,7 +19,7 @@
 
 #include "Viewer.h"
 
-using namespace molumes;
+using namespace honeycomb;
 using namespace glm;
 using namespace gl;
 
@@ -311,7 +311,7 @@ void CameraInteractor::resetViewTransform()
 	viewer()->setScaleFactor(1.0f);
 }
 
-void molumes::CameraInteractor::setLightPosition()
+void honeycomb::CameraInteractor::setLightPosition()
 {
 	// initial position of the light source (azimuth 120 degrees, elevation 45 degrees, 5 times the distance to the object in center) ---------------------------------------------------------------------------------------------------------
 	glm::mat4 viewTransform = viewer()->viewTransform();

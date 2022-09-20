@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../Viewer.h"
 
-using namespace molumes;
+using namespace honeycomb;
 using namespace gl;
 using namespace glm;
 using namespace globjects;

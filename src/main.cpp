@@ -29,7 +29,7 @@
 using namespace gl;
 using namespace glm;
 using namespace globjects;
-using namespace molumes;
+using namespace honeycomb;
 
 void error_callback(int errnum, const char * errmsg)
 {
@@ -53,8 +53,9 @@ int main(int argc, char *argv[])
 	glfwWindowHint(GLFW_SAMPLES, 8);
 
 	// Create a context and, if valid, make it current
-	GLFWwindow * window = glfwCreateWindow(1280, 720, "molumes", NULL, NULL);
-
+	GLFWwindow * window = glfwCreateWindow(1280, 720, "honeycomb", NULL, NULL);
+	//GLFWwindow* window = glfwCreateWindow(2560, 1440, "honeycomb", glfwGetPrimaryMonitor(), NULL);
+	
 	if (window == nullptr)
 	{
 		globjects::critical() << "Context creation failed - terminating execution.";

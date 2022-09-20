@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-namespace molumes
+namespace honeycomb
 {
 	class Renderer;
 

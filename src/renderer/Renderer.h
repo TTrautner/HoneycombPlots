@@ -21,7 +21,7 @@
 #include <globjects/NamedString.h>
 #include <globjects/base/StaticStringSource.h>
 
-namespace molumes
+namespace honeycomb
 {
 	class Viewer;
 

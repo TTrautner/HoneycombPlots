@@ -6,7 +6,7 @@
 #include <cstdio>
 #include <ctime>
 
-using namespace molumes;
+using namespace honeycomb;
 using namespace gl;
 using namespace glm;
 using namespace globjects;
@@ -99,7 +99,7 @@ Program * HexTile::getTileNormalsProgram()
 	return shaderProgram_hex_normals;
 }
 
-globjects::Program * molumes::HexTile::getGridProgram()
+globjects::Program * honeycomb::HexTile::getGridProgram()
 {
 	
 	auto shaderProgram_hexagon_grid = renderer->shaderProgram("hex-grid");
@@ -179,11 +179,11 @@ void HexTile::calculateNumberOfTiles(vec3 boundingBoxSize, vec3 minBounds)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-bool molumes::HexTile::pointLeftOfLine(vec2 a, vec2 b, vec2 p) {
+bool honeycomb::HexTile::pointLeftOfLine(vec2 a, vec2 b, vec2 p) {
 	return ((p.x - a.x)*(b.y - a.y) - (p.y - a.y)*(b.x - a.x)) < 0;
 }
 
-int molumes::HexTile::mapPointToTile1D(vec2 p)
+int honeycomb::HexTile::mapPointToTile1D(vec2 p)
 {
 	// to get intervals from 0 to maxCoord, we map the original Point interval to maxCoord+1
 	// If the current value = maxValue, we take the maxCoord instead

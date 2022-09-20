@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include <iostream>
 
-using namespace molumes;
+using namespace honeycomb;
 
 Scene::Scene()
 {

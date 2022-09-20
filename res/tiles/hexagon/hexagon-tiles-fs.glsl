@@ -23,7 +23,6 @@ in float tileSizeScreenSpace;
 
 uniform sampler2D accumulateTexture;
 uniform sampler2D tilesDiscrepancyTexture;
-uniform sampler2DArray tileTextureArray;
 
 // 1D color map parameters
 uniform sampler1D colorMapTexture;
@@ -129,20 +128,6 @@ void main()
 
 	// x,y of center of tile
     vec2 tileCenter2D = vec2(hex.x * horizontal_space + boundsScreenSpace[2] + tileSizeScreenSpace, hex.y * vertical_space + boundsScreenSpace[3] + vertical_offset); 
-
-#ifdef RENDER_TEXTURED_TILES 
-	// calculate the index within the texture array -----------------------------------------------------------------------------------------
-	int tileTextureArrayIndex = int(hex.x + (20-hex.y)*18);								// DEBUG: 20 elements per row, 18 elements per column
-	//---------------------------------------------------------------------------------------------------------------------------------------
-
-	// calculate texture coordinates within the tile
-	vec2 tileTextureCoords = (gl_FragCoord.xy-vec2(tileCenter2D))/tileSizeScreenSpace;	// calculate texture coordinates that span from [-1,1]
-	tileTextureCoords.x = (tileTextureCoords.x + 1.0f) / 2.0f;							// then, transform from [-1,1] to [0,1]
-	tileTextureCoords.y = 1.0f - (tileTextureCoords.y + 1.0f) / 2.0f;					// then, transform from [-1,1] to [0,1] and flip y-axis by subtracting it from 1.0f
-
-	// combine both coordinates and access texture array
-	hexTilesTexture.rgb = texture(tileTextureArray, vec3(tileTextureCoords, tileTextureArrayIndex)).rgb;
-#endif
 
 #ifdef RENDER_MONOCHROME_TILES
 	hexTilesTexture.rgb = tileColor;

@@ -1,5 +1,5 @@
 #include "Interactor.h"
-using namespace molumes;
+using namespace honeycomb;
 
 Interactor::Interactor(Viewer* viewer) : m_viewer(viewer)
 {

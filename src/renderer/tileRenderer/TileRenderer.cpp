@@ -8,7 +8,6 @@
 #include "../../Viewer.h"
 #include "../../Scene.h"
 #include "../../CSV/Table.h"
-#include <lodepng.h>
 #include <sstream>
 
 #include <glm/gtc/type_ptr.hpp>
@@ -16,6 +15,9 @@
 
 #include <cstdio>
 #include <ctime>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 
 #ifndef GLM_ENABLE_EXPERIMENTAL
@@ -26,7 +28,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
 
-using namespace molumes;
+using namespace honeycomb;
 using namespace gl;
 using namespace glm;
 using namespace globjects;
@@ -113,32 +115,6 @@ TileRenderer::TileRenderer(Viewer* viewer) : Renderer(viewer)
 	m_colorMapTexture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	m_colorMapTexture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	m_colorMapTexture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	//tile textures array
-	m_tileTextureArray = Texture::create(GL_TEXTURE_2D_ARRAY);
-	m_tileTextureArray->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	m_tileTextureArray->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	m_tileTextureArray->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	m_tileTextureArray->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	// allocate storage according to default values
-	m_tileTextureArray->storage3D(1, GL_RGBA32F, m_tileTextureWidth, m_tileTextureHeight, m_numberTextureTiles);
-	
-	for (int i = 1; i <= m_numberTextureTiles; i++) {
-	
-		std::vector<unsigned char> tileTextureImage;	
-		std::string filePath = "./dat/tileTextures/tileTexture_" + std::to_string(i) + ".png";
-
-		uint error = lodepng::decode(tileTextureImage, m_tileTextureWidth, m_tileTextureHeight, filePath);
-	
-		if (error)
-			globjects::debug() << "Could not load " << filePath << "!";
-		else
-		{
-			m_tileTextureArray->subImage3D( 0, 0, 0, /*Z-offset*/ i-1, m_tileTextureWidth, m_tileTextureHeight, 1, GL_RGBA, GL_UNSIGNED_BYTE, (void*)&tileTextureImage.front());
-		}
-	}
-
 	m_colorMapTexture->generateMipmap();
 
 
@@ -198,7 +174,7 @@ TileRenderer::TileRenderer(Viewer* viewer) : Renderer(viewer)
 }
 
 //Destructor
-molumes::TileRenderer::~TileRenderer()
+honeycomb::TileRenderer::~TileRenderer()
 {
 	if (tile_processors.count("square") > 0) {
 		delete tile_processors["square"];
@@ -700,12 +676,6 @@ void TileRenderer::display()
 			shaderProgram_tiles->setUniform("textureWidth", m_ColorMapWidth);
 		}
 
-		if(m_tileTexturing)
-		{ 
-			m_tileTextureArray->bindActive(6);
-			shaderProgram_tiles->setUniform("tileTextureArray", 6);
-		}
-
 		m_vaoQuad->bind();
 
 		shaderProgram_tiles->use();
@@ -713,11 +683,6 @@ void TileRenderer::display()
 		shaderProgram_tiles->release();
 
 		m_vaoQuad->unbind();
-
-		if(m_tileTexturing)
-		{
-			m_tileTextureArray->unbindActive(6);
-		}
 
 		if (m_colorMapLoaded)
 		{
@@ -968,7 +933,6 @@ void TileRenderer::renderGUI() {
 				if (m_fileNames[m_fileDataID] == "CaliforniaHousing.csv") 
 				{
 					m_tileSize_tmp = 7.0f;
-					//m_tileTexturing = false;
 					m_pointCircleRadius = 4.0f;
 					m_aaoScaling = 0.5f;
 					m_sigma = 2.0f;
@@ -980,7 +944,6 @@ void TileRenderer::renderGUI() {
 				else if (m_fileNames[m_fileDataID] == "GenderEquality-EU28-2020.csv") 
 				{
 					m_tileSize_tmp = 42.0;
-					//m_tileTexturing = true;
 					m_pointCircleRadius = 10.0f;
 					m_aaoScaling = 4.0f;
 					m_sigma = 2.0f;
@@ -992,7 +955,6 @@ void TileRenderer::renderGUI() {
 				else if (m_fileNames[m_fileDataID] == "Methodology_AmberInclusions.csv") 
 				{
 					m_tileSize_tmp = 32.2f;
-					//m_tileTexturing = false;
 					m_pointCircleRadius = 10.0f;
 					m_aaoScaling = 2.5f;
 					m_sigma = 1.5f;
@@ -1004,7 +966,6 @@ void TileRenderer::renderGUI() {
 				else if (m_fileNames[m_fileDataID] == "Methodology_DiamondCut.csv") 
 				{
 					m_tileSize_tmp = 32.2f;
-					//m_tileTexturing = false;
 					m_pointCircleRadius = 10.0f;
 					m_aaoScaling = 2.5f;
 					m_sigma = 1.5f;
@@ -1016,7 +977,6 @@ void TileRenderer::renderGUI() {
 				else if (m_fileNames[m_fileDataID] == "Methodology_ReliefMosaic.csv") 
 				{
 					m_tileSize_tmp = 32.2f;
-					//m_tileTexturing = false;
 					m_pointCircleRadius = 10.0f;
 					m_aaoScaling = 2.5f;
 					m_sigma = 1.5f;
@@ -1028,7 +988,6 @@ void TileRenderer::renderGUI() {
 				else if (m_fileNames[m_fileDataID].compare("Tornados_1950-2019.csv") == 0) 
 				{
 					m_tileSize_tmp = 5.2f;
-					//m_tileTexturing = false;
 					m_pointCircleRadius = 2.0f;
 					m_aaoScaling = 0.5f;
 					m_sigma = 10.0f;
@@ -1040,7 +999,6 @@ void TileRenderer::renderGUI() {
 				else if (m_fileNames[m_fileDataID].length() >= 14 && m_fileNames[m_fileDataID].substr(0,14) == "UserStudy_Task") 
 				{
 					m_tileSize_tmp = 27.5f;
-					//m_tileTexturing = false;
 					m_pointCircleRadius = 6.5f;
 					m_aaoScaling = 2.5f;
 					m_sigma = 1.5f;
@@ -1130,23 +1088,26 @@ void TileRenderer::renderGUI() {
 						"./dat/colormaps/rainbow_1D.png", "./dat/colormaps/summer_1D.png", "./dat/colormaps/virdis_1D.png", "./dat/colormaps/winter_1D.png", "./dat/colormaps/wista_1D.png", "./dat/colormaps/YlGnBu_1D.png",
 						"./dat/colormaps/YlOrRd_1D.png" };
 
-					uint colorMapWidth, colorMapHeight;
-					std::vector<unsigned char> colorMapImage;
-
+					int colorMapWidth, colorMapHeight, colorMapChannels;
 					std::string textureName = colorMapFilenames[m_colorMap - 1];
 
-					uint error = lodepng::decode(colorMapImage, colorMapWidth, colorMapHeight, textureName);
+					stbi_set_flip_vertically_on_load(true);
+					unsigned char* data = stbi_load(textureName.c_str(), &colorMapWidth, &colorMapHeight, &colorMapChannels, 0);
 
-					if (error)
-						globjects::debug() << "Could not load " << colorMapFilenames[m_colorMap - 1] << "!";
-					else
+					if (data)
 					{
-						m_colorMapTexture->image1D(0, GL_RGBA, colorMapWidth, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)&colorMapImage.front());
+						m_colorMapTexture->image1D(0, GL_RGBA, colorMapWidth, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 						m_colorMapTexture->generateMipmap();
 
 						// store width of texture and mark as loaded
 						m_ColorMapWidth = colorMapWidth;
 						m_colorMapLoaded = true;
+
+						stbi_image_free(data);
+					}
+					else
+					{
+						globjects::debug() << "Could not load " << colorMapFilenames[m_colorMap - 1] << "!";
 					}
 				}
 				else
@@ -1172,7 +1133,7 @@ void TileRenderer::renderGUI() {
 		if (ImGui::CollapsingHeader("Tiles"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			const char* tile_styles[]{ "none", "square", "hexagon" };
-			ImGui::Combo("Tile Rendering", &m_selected_tile_style_tmp, tile_styles, IM_ARRAYSIZE(tile_styles));
+			//ImGui::Combo("Tile Rendering", &m_selected_tile_style_tmp, tile_styles, IM_ARRAYSIZE(tile_styles));
 			ImGui::Checkbox("Render Grid", &m_renderGrid);
 			ImGui::SliderFloat("Grid Width", &m_gridWidth, 1.0f, 3.0f);
 			ImGui::SliderFloat("Tile Size", &m_tileSize_tmp, 1.0f, 10.0f);
@@ -1203,7 +1164,6 @@ void TileRenderer::renderGUI() {
 			ImGui::SliderFloat("Border Width", &m_borderWidth, 0.01f, 0.99f);
 			//ImGui::Checkbox("Show Border", &m_showBorder);
 			ImGui::Checkbox("Invert Pyramid", &m_invertPyramid);
-			//ImGui::Checkbox("Texture Tiles", &m_tileTexturing);
 		}
 
 		// ImGui::Checkbox("Show Normal Buffer", &m_renderNormalBuffer);
@@ -1267,9 +1227,6 @@ void TileRenderer::setShaderDefines() {
 	if (m_renderMomochromeTiles)
 		defines += "#define RENDER_MONOCHROME_TILES\n";
 
-	if(m_tileTexturing)
-		defines += "#define RENDER_TEXTURED_TILES\n";
-
 	if (m_showDiamondCutOutline)
 		defines += "#define RENDER_DIAMONDCUT_OUTLINE\n";
 
@@ -1286,7 +1243,7 @@ void TileRenderer::setShaderDefines() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //maps value x from [a,b] --> [0,c]
-float molumes::TileRenderer::mapInterval(float x, float a, float b, int c)
+float honeycomb::TileRenderer::mapInterval(float x, float a, float b, int c)
 {
 	return (x - a)*c / (b - a);
 }
@@ -1450,7 +1407,7 @@ std::vector<float> TileRenderer::calculateDiscrepancy2D(const std::vector<float>
 
 			// account for tiles with few points
 			//maxDifference = (1 - m_discrepancy_lowCount) * maxDifference + m_discrepancy_lowCount * (1 - pow((pointsInTilesCount[i] / float(maxSampleCount)), 2));
-			maxDifference = min(maxDifference + m_discrepancy_lowCount * (1 - pow((pointsInTilesCount[i] / float(maxSampleCount)), 2)), 1.0f);
+			maxDifference = min(maxDifference + m_discrepancy_lowCount * (1 - float(pow((pointsInTilesCount[i] / float(maxSampleCount)), 2))), 1.0f);
 
 
 			discrepancies[i] = maxDifference;

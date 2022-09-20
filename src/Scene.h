@@ -3,7 +3,7 @@
 #include <memory>
 #include "CSV/Table.h"
 
-namespace molumes
+namespace honeycomb
 {
 	class Table;
 

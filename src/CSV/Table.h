@@ -7,7 +7,7 @@
 #include "rapidcsv.h"
 
 
-namespace molumes
+namespace honeycomb
 {
 	class Table
 	{

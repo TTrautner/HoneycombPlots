@@ -24,7 +24,7 @@
 #include <globjects/base/StaticStringSource.h>
 #include <globjects/Query.h>
 
-namespace molumes
+namespace honeycomb
 {
 	class Viewer;
 
@@ -84,8 +84,6 @@ namespace molumes
 
 		int m_ColorMapWidth = 0;
 		std::unique_ptr<globjects::Texture> m_colorMapTexture = nullptr;
-
-		std::unique_ptr<globjects::Texture> m_tileTextureArray = nullptr;
 
 		//---------------------------------------------------------------------------------------
 
@@ -194,9 +192,6 @@ namespace molumes
 		float m_diamondCutOutlineWidth = 2.5f;
 		float m_diamondCutOutlineDarkening = 0.65f;
 
-		// textured tiles default values
-		glm::uint m_tileTextureWidth = 300;
-		glm::uint  m_tileTextureHeight = 300;
 		int m_numberTextureTiles = 99;			// total number of tile we want to load
 
 		// define booleans
@@ -210,7 +205,6 @@ namespace molumes
 		bool m_renderDepthBuffer = false;
 		bool m_renderAnalyticalAO = true;
 		bool m_renderMomochromeTiles = false;
-		bool m_tileTexturing = false;
 		bool m_showDiamondCutOutline = true;
 
 		// ------------------------------------------------------------------------------------------

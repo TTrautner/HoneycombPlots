@@ -19,7 +19,7 @@
 #include "Interactor.h"
 #include "renderer/Renderer.h"
 
-namespace molumes
+namespace honeycomb
 {
 
 	class Viewer

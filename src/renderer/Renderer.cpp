@@ -4,7 +4,7 @@
 #include <iostream>
 #include <filesystem>
 
-using namespace molumes;
+using namespace honeycomb;
 using namespace gl;
 using namespace glm;
 using namespace globjects;

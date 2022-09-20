@@ -1,39 +1,39 @@
 #include "Tile.h"
 
-using namespace molumes;
+using namespace honeycomb;
 
 //IS USED AS ABSTRACT CLASS!!
 //DOES NOT CONTAIN ANY IMPLEMENTATIONS
-molumes::Tile::Tile(Renderer* renderer)
+honeycomb::Tile::Tile(Renderer* renderer)
 {
 	this->renderer = renderer;
 }
 
-globjects::Program * molumes::Tile::getAccumulationProgram()
+globjects::Program * honeycomb::Tile::getAccumulationProgram()
 {
 	return nullptr;
 }
 
-globjects::Program * molumes::Tile::getTileProgram()
+globjects::Program * honeycomb::Tile::getTileProgram()
 {
 	return nullptr;
 }
 
-globjects::Program * molumes::Tile::getTileNormalsProgram()
+globjects::Program * honeycomb::Tile::getTileNormalsProgram()
 {
 	return nullptr;
 }
 
-globjects::Program * molumes::Tile::getGridProgram()
+globjects::Program * honeycomb::Tile::getGridProgram()
 {
 	return nullptr;
 }
 
-void molumes::Tile::calculateNumberOfTiles(glm::vec3 boundingBoxSize, glm::vec3 minBounds)
+void honeycomb::Tile::calculateNumberOfTiles(glm::vec3 boundingBoxSize, glm::vec3 minBounds)
 {
 }
 
-int molumes::Tile::mapPointToTile1D(glm::vec2 p) 
+int honeycomb::Tile::mapPointToTile1D(glm::vec2 p) 
 {
 	return 0;
 }

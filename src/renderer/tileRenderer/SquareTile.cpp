@@ -6,7 +6,7 @@
 #include <cstdio>
 #include <ctime>
 
-using namespace molumes;
+using namespace honeycomb;
 using namespace gl;
 using namespace glm;
 using namespace globjects;
@@ -80,7 +80,7 @@ Program * SquareTile::getTileNormalsProgram()
 	return shaderProgram_square_normals;
 }
 
-globjects::Program * molumes::SquareTile::getGridProgram()
+globjects::Program * honeycomb::SquareTile::getGridProgram()
 {
 	
 	auto shaderProgram_square_grid = renderer->shaderProgram("square-grid");

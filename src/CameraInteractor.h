@@ -2,7 +2,7 @@
 #include "Interactor.h"
 #include <glm/glm.hpp>
 
-namespace molumes
+namespace honeycomb
 {
 	class Viewer;
 

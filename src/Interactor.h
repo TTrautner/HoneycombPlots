@@ -1,6 +1,6 @@
 #pragma once
 
-namespace molumes
+namespace honeycomb
 {
 	class Viewer;
 
