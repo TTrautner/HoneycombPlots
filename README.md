@@ -68,7 +68,7 @@ To correctly locate shaders and other resources (which are stored in the  ```./r
 ```
 ## Usage
 
-After starting the program, choose one of the provided example data sets as "File" from the dropdown menu. The resulting visualization is then generated using default parameters, which can further be customized using the GUI.
+After starting the program, choose one of the provided example data sets as "File" from the dropdown menu. The resulting visualization is then generated using default parameters, which can further be customized using the GUI. Note, however, that the exact hexagonal tiling depends on the used screen resolution. We, therefore, recommend ```2560 x 1440``` to be able to regenerate the visualizations used in the publication based on the default settings.
 
 ## License
 
